@@ -1,5 +1,6 @@
 {
   "name": "project-flashcards",
+  "homepage": "https://barbaroreyes.github.io/Flash-Card",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -7,6 +8,7 @@
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
     "cross-fetch": "^3.0.5",
+    "gh-pages": "^3.1.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.2.0",
@@ -14,6 +16,8 @@
     "tachyons": "^4.12.0"
   },
   "scripts": {
+  "predeploy": "npm run build",
+  "deploy": "gh-pages -d build",
     "start": "concurrently 'npm run start:server' 'npm run start:react'",
     "start:react": "react-scripts start",
     "start:server": "json-server ./data/db.json",
