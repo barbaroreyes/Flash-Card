@@ -5,13 +5,13 @@ import NotFound from "./NotFound";
 
 
 
+
 function Layout() {
   return (
-    <div className ='tc'>
+    <div className ='tc ma2 pa3'>
       <Header/>
       <div className="container">
        <Switch>
-       
        <Route>
        <NotFound />
        </Route>
