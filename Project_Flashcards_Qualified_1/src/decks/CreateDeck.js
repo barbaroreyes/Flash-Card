@@ -1,29 +1,31 @@
-import React, { useEffect } from 'react'
-import { useParams, Link, useHistory } from 'react-router-dom'
-import { readDeck, updateDeck } from '../utils/api'
+import React, { useState } from 'react'
+import { useHistory, Link } from 'react-router-dom'
+import { createDeck } from '../utils/api/index'
 
-export default function EditDeck({ selectedDeck, setSelectedDeck }) {
-  const { deckId } = useParams()
+export default function CreateDeck({ deckList, createDeckHandler }) {
   const history = useHistory()
 
-  useEffect(() => {
-    const abortController = new AbortController()
-    readDeck(deckId, abortController.signal).then(setSelectedDeck)
+  const initialState = {
+    name: '',
+    description: '',
+  }
 
-    return () => abortController.abort()
-  }, [deckId])
+  let lastDeck = deckList[deckList.length - 1]
 
+  const [formData, setFormData] = useState({ ...initialState })
   const handleChange = ({ target }) => {
-    setSelectedDeck({
-      ...selectedDeck,
+    setFormData({
+      ...formData,
       [target.name]: target.value,
     })
   }
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    updateDeck(selectedDeck)
-    history.push(`/decks/${deckId}`)
+    const response = createDeck(formData)
+    createDeckHandler(response)
+    history.push(`/decks/${lastDeck.id + 1}`)
+    history.go(0)
   }
 
   return (
@@ -36,45 +38,45 @@ export default function EditDeck({ selectedDeck, setSelectedDeck }) {
             </Link>
           </li>
           <li className='breadcrumb-item active' aria-current='page'>
-            <Link to={`/decks/${selectedDeck.id}`}>{selectedDeck.name}</Link>
-          </li>
-          <li className='breadcrumb-item active' aria-current='page'>
-            Edit Deck
+            Create Deck
           </li>
         </ol>
       </nav>
-      <h1>Edit Deck</h1>
+      <h1> Create Deck</h1>
       <form onSubmit={handleSubmit}>
         <div className='form-group'>
           <label htmlFor='name'>Name</label>
-          <textarea
+          <input
             className='form-control'
             id='name'
             type='text'
             name='name'
+            placeholder='Deck Name'
             onChange={handleChange}
-            value={selectedDeck.name}
+            value={formData.name}
           />
         </div>
         <div className='form-group'>
           <label htmlFor='description'>Description</label>
+
           <textarea
             className='form-control'
             id='description'
             type='text'
             name='description'
+            placeholder='Brief description of the deck'
             onChange={handleChange}
-            value={selectedDeck.description}
+            value={formData.description}
           />
         </div>
         <div className='buttons mb-3'>
-          <Link
-            to={`/decks/${selectedDeck.id}`}
+          <button
             type='button'
             className='btn btn-secondary mr-2'
+            onClick={() => history.push('/')}
           >
             Cancel
-          </Link>
+          </button>
           <button type='submit' className='btn btn-primary'>
             Submit
           </button>
