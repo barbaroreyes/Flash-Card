@@ -12,13 +12,13 @@ function App() {
   return (
     <div className="app-routes">
       <Switch>
-        <Route path="/">
-          <Layout />
+        <Route  path="/">
+          <Layout/>
         </Route>
         <Route></Route>
       </Switch>
     </div>
   );
 }
-
+   
 export default App;
