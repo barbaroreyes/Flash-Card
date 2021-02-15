@@ -1,14 +1,14 @@
 import React, { useState } from 'react'
 import { Redirect, Route, Switch } from 'react-router-dom'
-import Home from '../Decks/DeckList'
-import StudyDeck from '../Decks/StudyDeck'
+import Home from '../decks/DeckList'
+import StudyDeck from '../decks/StudyDeck'
 import NotFound from './NotFound'
 import Header from './Header'
-import DeckEdit from '../Decks/EditDeck'
-import DeckView from '../Decks/DisplayDeck'
-import CardEdit from '../Cards/EditCard'
-import CardCreate from '../Cards/AddCard'
-import DeckCreate from '../Decks/CreateDeck'
+import EditDeck from '../decks/EditDeck'
+import DisplayDeck from '../decks/DisplayDeck'
+import EditCard from '../cards/EditCard'
+import AddCard from '../cards/AddCard'
+import CreateDeck from '../decks/CreateDeck'
 
 function Layout() {
   const [deckList, setDeckList] = useState([])
@@ -19,12 +19,12 @@ function Layout() {
   }
 
   return (
-    <div>
+    <>
       <Header />
       <div className='container'>
         <Switch>
           <Route path='/decks/new'>
-            <DeckCreate
+            <CreateDeck
               deckList={deckList}
               createDeckHandler={createDeckHandler}
             />
@@ -36,25 +36,25 @@ function Layout() {
             />
           </Route>
           <Route path='/decks/:deckId/edit'>
-            <DeckEdit
+            <EditDeck
               selectedDeck={selectedDeck}
               setSelectedDeck={setSelectedDeck}
             />
           </Route>
           <Route path='/decks/:deckId/cards/new'>
-            <CardCreate
+            <AddCard
               selectedDeck={selectedDeck}
               setSelectedDeck={setSelectedDeck}
             />
           </Route>
           <Route path='/decks/:deckId/cards/:cardId/edit'>
-            <CardEdit
+            <EditCard
               selectedDeck={selectedDeck}
               setSelectedDeck={setSelectedDeck}
             />
           </Route>
           <Route exact={true} path='/decks/:deckId'>
-            <DeckView />
+            <DisplayDeck />
           </Route>
           <Route exact={true} path='/decks'>
             <Redirect to='/' />
@@ -67,7 +67,7 @@ function Layout() {
           </Route>
         </Switch>
       </div>
-    </div>
+    </>
   )
 }
 
